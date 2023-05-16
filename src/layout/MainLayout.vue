@@ -2,9 +2,9 @@
   <div class="main-layout-container">
     <header><slot name="header"/></header>
     <div class="main-layout-body">
-      <aside></aside>
+      <aside id="left"></aside>
       <main><slot name="main"/></main>
-      <aside></aside>
+      <aside id="right"></aside>
     </div>
     <footer><slot name="footer"/></footer>
   </div>
@@ -29,7 +29,11 @@ header, footer {
   display: flex;
 }
 
-aside {
+#left {
+  flex: 0 0 30%;
+}
+
+#right {
   flex: 0 0 20%;
 }
 

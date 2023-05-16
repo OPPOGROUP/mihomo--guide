@@ -28,8 +28,12 @@
   <div
     style="border: 1px solid black; border-radius: 5px; padding: 10px"
   >{{getCookieCode}}</div>
-  <p>然后按回车(enter)执行代码 复制<span style="color: red">红</span>框里的内容到微信发给公众号(每个人内容不一样)</p>
+  <p>然后按回车(enter)执行代码</p>
   <img :src="invokePNG" alt="invoke">
+  <p>复制<span style="color: red">红</span>框里的内容到微信发给公众号(每个人内容不一样)</p>
+  <img :src="scOk" alt="sc_ok">
+  <p>成功大概是这样的</p>
+  <p>之后就可以推送给你消息了</p>
 </template>
 
 <script setup lang="ts">
@@ -38,6 +42,7 @@ import F12 from '../assets/f12.png'
 import consoleCh from '../assets/consoleCh.png'
 import consoleEn from '../assets/consoleEn.png'
 import invokePNG from '../assets/invoke.png'
+import scOk from '../assets/scOk.png'
 
 const getCookieCode = "{const sc=`#45319 sc ${JSON.stringify(document.cookie.split(';').map(a=>a.split('=')).reduce((b,[k,v])=>{if(b.s.has(k.trim()))b.c[k.trim()]=v;return b},{c:{},s:new Set(['cookie_token'])}).c)}`;console.log(sc);}"
 
