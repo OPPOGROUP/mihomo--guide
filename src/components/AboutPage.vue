@@ -46,11 +46,15 @@
 import logoLi from '../assets/li.jpg'
 import logoChen from '../assets/chen.jpg'
 
-const cmds: [string, string, string][] = [
-  ['sc', 'set cookie', '设置米游社cookie'],
-  ['sl', 'send long', '直接给隆桑发消息'],
-  ['sn', 'set name', '可以给自己设置一个昵称']
-]
+const cmds: [string, string, string][] = []
+
+fetch('https://wx.cdl.zone/cmd', {method: 'GET'})
+  .then(res => res.json() as Promise<{cmd: string, name: string, desc: string}[]>)
+  .then(results => {
+    for (const {cmd, name, desc} of results) {
+      cmds.push([cmd, name, desc])
+    }
+  })
 </script>
 
 <style scoped>

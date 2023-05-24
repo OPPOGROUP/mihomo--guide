@@ -20,48 +20,89 @@
     href="https://developer.mozilla.org/zh-CN/docs/Learn/Common_questions/Tools_and_setup/What_are_browser_developer_tools"
     target="_blank"
   >如何打开浏览器开发者工具</a></p>
-  <p>接下来找到 console 或者是 控制台</p>
-  <p>(觉得有点乱可以按 ctrl + L 清屏)</p>
-  <img :src="consoleCh" alt="console-ch">
-  <img :src="consoleEn" alt="console-en">
-  <p>接下来复制黑框内的代码, 粘贴到控制台里 -> <span class="click-copy" @click="copyCode">点击复制</span></p>
-  <div
-    style="border: 1px solid black; border-radius: 5px; padding: 10px"
-  >{{getCookieCode}}</div>
-  <p>然后按回车(enter)执行代码</p>
-  <img :src="invokePNG" alt="invoke">
-  <p>复制<span style="color: red">红</span>框里的内容到微信发给公众号(每个人内容不一样)</p>
-  <img :src="scOk" alt="sc_ok">
-  <p>成功大概是这样的</p>
-  <p>之后就可以推送给你消息了</p>
+  <hr>
+  <p>在顶部选项栏找到Application按钮 (中文版本叫 '应用')</p>
+  <img :src="AppBt" alt="app_bt">
+  <p>如果找不到 它可能藏在这个 '>>' 里面</p>
+  <img :src="AppBtHide" alt="hide">
+  <hr>
+  <p>然后在侧边栏找到cookie 并点击这个https开头的栏目</p>
+  <img :src="CookieSide" alt="cookie_side">
+  <hr>
+  <p>接下来在这一堆里找到红框里的条目</p>
+  <h2>cookie_token_v2</h2>
+  <h2>account_id_v2</h2>
+  <img :src="CookieSelect" alt="cookie_select">
+  <p>点条目它的值会显示在底部红框所示位置 可以复制</p>
+  <hr>
+  <p>然后完成下面的表单</p>
+  <div>
+    <p>
+      cookie_token_v2:
+      <input type="text" v-model="cookie_token">
+      <span v-show="cookie_token.length === 0" style="margin-left: 20px; color: red">不能为空哇</span>
+    </p>
+    <p>
+      account_id_v2:
+      <input type="text" v-model="account_id">
+      <span v-show="account_id.length === 0" style="margin-left: 20px; color: red">不能为空哇</span>
+    </p>
+    <div v-show="isFormOk" style="margin-top: 50px; margin-bottom: 50px">
+      <span class="result-box">{{result}}</span>
+    </div>
+  </div>
+
+  <p v-if="!isFormOk">填完表格后继续 {{ddd}}</p>
+  <div v-else>
+    <p>最后把黑框里的内容全部复制发给微信就ok了</p>
+    <img :src="scOk" alt="sc_ok" width="400">
+    <p>更多指令点页面顶部右侧 about 查看</p>
+  </div>
 </template>
 
 <script setup lang="ts">
 import {QR_CODE_URL} from "../env";
 import F12 from '../assets/f12.png'
-import consoleCh from '../assets/consoleCh.png'
-import consoleEn from '../assets/consoleEn.png'
-import invokePNG from '../assets/invoke.png'
-import scOk from '../assets/scOk.png'
+import AppBt from '../assets/application_bt.png'
+import AppBtHide from '../assets/hiden.png'
+import CookieSide from '../assets/cookie.png'
+import CookieSelect from '../assets/cookie_select.png'
+import scOk from '../assets/sc_ok.png'
+import {computed, ref} from "vue";
 
-const getCookieCode = "{const sc=`#45319 sc ${JSON.stringify(document.cookie.split(';').map(a=>a.split('=')).reduce((b,[k,v])=>{if(b.s.has(k.trim()))b.c[k.trim()]=v;return b},{c:{},s:new Set(['cookie_token'])}).c)}`;console.log(sc);}"
+const cookie_token = ref('')
+const account_id = ref('')
+const ddd = ref('')
+const isFormOk = computed(() => cookie_token.value.length !== 0 && account_id.value.length !== 0)
+const result = computed(() => `#45319 sc ${JSON.stringify({account_id: account_id.value, cookie_token: cookie_token.value})}`)
 
-const copyCode = () => {
-  navigator.clipboard.writeText(getCookieCode)
+const sleep = (n: number) => new Promise(resolve => {
+  setTimeout(resolve, n)
+})
+const loop = async () => {
+  while (true) {
+    if (ddd.value.length === 6) {
+      ddd.value = ''
+    } else {
+      ddd.value += '.'
+    }
+    await sleep(500)
+  }
 }
+
+loop()
 </script>
 
 <style scoped>
-.click-copy {
-  border: 1px solid black;
-  padding-left: 10px;
-  padding-right: 10px;
-  border-radius: 5px;
-  cursor: pointer;
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
 }
 
-.click-copy:hover {
-  background-color: black;
-  color: white;
+.result-box {
+  padding: 20px;
+  border: solid 1px black;
 }
 </style>
